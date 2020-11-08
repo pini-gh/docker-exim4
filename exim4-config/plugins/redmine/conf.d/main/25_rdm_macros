@@ -1,0 +1,6 @@
+# Place this file at
+# /etc/exim4/conf.d/main/25_rdm_macros
+
+domainlist rdm_domains_@idx@=@domainlist@
+RDM_USER_@idx@=@user@
+RDM_OPTIONS_@idx@=@options@

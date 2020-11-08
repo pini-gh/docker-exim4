@@ -1,0 +1,8 @@
+# Place this file at
+# /etc/exim4/conf.d/router/455_rdm_router
+
+redmine_router_@idx@:
+  driver = accept
+  domains = +rdm_domains_@idx@
+  condition = ${if eq{${lc:$local_part}}{RDM_USER_@idx@}}
+  transport = redmine_transport_@idx@

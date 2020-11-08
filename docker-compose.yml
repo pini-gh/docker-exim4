@@ -1,0 +1,32 @@
+version: '3.5'
+
+services:
+  exim4:
+    image: pinidh/docker-exim4:latest
+    container_name: ${SERVER_HOSTNAME}
+    hostname: ${SERVER_HOSTNAME}
+    domainname: ${SERVER_DOMAINNAME}
+    restart: always
+    ports:
+     - '25:25'
+    env_file:
+      - env_plugins
+    volumes:
+      - cert:/var/spool/exim4/cert
+      #- mailman_core-vol:/opt/lists.example.com:ro
+    environment:
+      - SERVER_MAILNAME
+      - LOCAL_DOMAINS
+      - EXIM4_TLS_ENABLE
+      - EXIM4_TLS_CERTIFICATE
+      - EXIM4_TLS_PRIVATEKEY
+    networks:
+      bridge:
+
+volumes:
+  cert:
+  mailman_core-vol:
+    external: true
+
+networks:
+  bridge:

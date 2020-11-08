@@ -1,0 +1,5 @@
+# Json table for mailman servers if any
+#PLUGIN_SPEC_MAILMAN={"plugin": "mailman", "instances": [{"domainlist": "lists.example.com", "host": "mailman-core", "home": "/opt/lists.example.com/var"}]}
+
+# Json table for redmine servers
+#PLUGIN_SPEC_REDMINE={"plugin": "redmine", "instances": [{"domainlist": "redmine.example.com", "user": "redmine", "options": "--url https://redmine.example.com/ --key mysecretkey --project myproject --allow-override all"}]}

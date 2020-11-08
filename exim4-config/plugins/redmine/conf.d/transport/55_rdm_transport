@@ -1,0 +1,10 @@
+# Place this file at
+# /etc/exim4/conf.d/transport/55_rdm_transport
+
+redmine_transport_@idx@:
+  debug_print = "Email for Redmine @domainlist@"
+  driver = pipe
+  command = /var/spool/exim4/plugins/redmine/bin/rdm-mailhandler.rb RDM_OPTIONS_@idx@
+  delivery_date_add
+  user = Debian-exim
+  home_directory = /tmp
