@@ -30,6 +30,9 @@ sed -i 's/(d_mail)/(d_stdout)/' /etc/syslog-ng/syslog-ng.conf
 # Tell syslog-ng to reload conf
 killall -SIGHUP syslog-ng
 
+# TLS defaults to FALSE
+export EXIM4_TLS_ENABLE="${EXIM4_TLS_ENABLE:-FALSE}"
+
 #### Custom configuration files ####
 # Substitute every @EXIM4_*@ placeholder with the corresponding environment variable value
 exim4_vars=$(env | sed -En '/^(EXIM4_[^=]+)=.*$/{s//\1/;p}')
