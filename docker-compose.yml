@@ -2,7 +2,7 @@ version: '3.5'
 
 services:
   exim4:
-    image: pinidh/docker-exim4:latest
+    image: pinidh/exim4:latest
     container_name: ${SERVER_HOSTNAME}
     hostname: ${SERVER_HOSTNAME}
     domainname: ${SERVER_DOMAINNAME}
