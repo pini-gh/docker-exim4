@@ -25,8 +25,10 @@ services:
 
 volumes:
   cert:
-  mailman_core-vol:
-    external: true
+#  mailman_core-vol:
+#    external: true
+#    # Name of the core-vol volume of the mailman-core container
+#    name: mailman_core-vol
 
 networks:
   bridge:
