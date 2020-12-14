@@ -24,6 +24,16 @@ EOF
 
 echo "$SERVER_MAILNAME" >/etc/mailname
 
+# /etc/aliases
+
+sed -i '/# CHANGES BELOW THIS LINE ARE NOT PERSISTENT/,$d' /etc/aliases
+echo '# CHANGES BELOW THIS LINE ARE NOT PERSISTENT' >>/etc/aliases
+if [ -n "$EXIM4_BLACKHOLE" ]; then
+  for alias in $EXIM4_BLACKHOLE; do
+    echo "$alias: :blackhole:"
+  done >>/etc/aliases
+fi
+
 # Redirect logs to syslog-ng and configure it to forward them to stdout
 echo 'log_file_path = syslog' >/etc/exim4/conf.d/main/00_logs
 sed -i 's/(d_mail)/(d_stdout)/' /etc/syslog-ng/syslog-ng.conf
