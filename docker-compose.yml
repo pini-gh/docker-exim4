@@ -13,6 +13,7 @@ services:
       - env_plugins
     volumes:
       - cert:/var/spool/exim4/cert
+      #- dkim:/var/spool/exim4/dkim
       #- mailman_core-vol:/opt/lists.example.com:ro
     environment:
       - SERVER_MAILNAME
@@ -20,11 +21,19 @@ services:
       - EXIM4_TLS_ENABLE
       - EXIM4_TLS_CERTIFICATE
       - EXIM4_TLS_PRIVATEKEY
+      # Change to 'TRUE' to enable dkim signature
+      #-EXIM4_DKIM_SIGNATURE_ENABLE=FALSE
+      #-EXIM4_DKIM_DOMAIN=lists.example.com
+      #-EXIM4_DKIM_SELECTOR=default
+      #-EXIM4_DKIM_PRIVATE_KEY=/var/spool/exim4/dkim/dkim.private
+      #-EXIM4_DKIM_CANON=relaxed
+      #-EXIM4_DKIM_STRICT=1
     networks:
       bridge:
 
 volumes:
   cert:
+#  dkim:
 #  mailman_core-vol:
 #    external: true
 #    # Name of the core-vol volume of the mailman-core container
