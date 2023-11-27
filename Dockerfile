@@ -1,11 +1,16 @@
-FROM pinidh/baseimage-debian-bullseye:latest
+FROM pinidh/baseimage-debian-bookworm:latest
 
 # Use baseimage-docker's init system.
 CMD ["/sbin/my_init"]
 
 # Depends on mkfifo (coreutils) to redirect logs
 # Depends on iproute2 (coreutils) to discover network
-RUN apt-get update && DEBIAN_FRONTEND=noninteractive apt-get -y install --no-install-recommends exim4 coreutils iproute2
+RUN apt-get update && DEBIAN_FRONTEND=noninteractive apt-get -y install --no-install-recommends \
+ exim4 \
+ bind9-host \
+ coreutils \
+ iproute2 \
+ python-is-python3
 # Depends on jq for templates configuration processing
 RUN DEBIAN_FRONTEND=noninteractive apt-get -y install --no-install-recommends jq
 # Depends on ruby for the redmine template

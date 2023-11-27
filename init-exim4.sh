@@ -2,7 +2,42 @@
 
 set -ex
 
+join_by () {
+  local d=${1-} f=${2-}
+  if shift 2; then
+    printf %s "$f" "${@/#/$d}"
+  fi
+}
+
 #### Main configuration ####
+
+# Process network relay list
+export EXIM4_RELAY_NETS="${EXIM4_RELAY_NETS:-}"
+declare -a networks
+for network in $EXIM4_RELAY_NETS; do
+  if [[ "$network" =~ ^[0-9]+\.[0-9]+\.[0-9]+\.[0-9](/[0-9]+)?$ ]]; then
+    # IPv4
+    networks+=( "$network" )
+  elif [[ "$network" =~ ^.*:.*$ ]]; then
+    # IPv6
+    networks+=( "$network" )
+  else
+    # hostname
+    ip="$(host "$network" | grep -Ev 'IPv6|not found' | awk '{print $4}')"
+    if [ -n "$ip" ]; then
+      network=$(ip -br -4 a sh | grep " $ip/" | awk '{print $3}')
+      if [ -n "$network" ]; then
+        # local network from local hostname
+        networks+=( "$network" )
+      else
+        # external hostname
+        networks+=( "$ip" )
+      fi
+    fi
+  fi
+done
+IFS=$'\n' sorted_networks=($(sort -u <<<"${networks[*]}")); unset IFS
+EXIM4_RELAY_NETS="$(join_by " ; " "${sorted_networks[@]}")"
 
 # Exim4 configuration the Debian way
 cat <<EOF >/etc/exim4/update-exim4.conf.conf
@@ -12,7 +47,7 @@ dc_local_interfaces=''
 dc_readhost=''
 dc_relay_domains=''
 dc_minimaldns='false'
-dc_relay_nets='$(ip -o -f inet addr show | awk '/scope global/ {print $4}' | xargs echo | tr ' ' ';')'
+dc_relay_nets='$EXIM4_RELAY_NETS'
 dc_smarthost=''
 CFILEMODE='644'
 dc_use_split_config='true'
