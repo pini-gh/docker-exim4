@@ -1,4 +1,4 @@
-FROM pinidh/baseimage-debian-bookworm:latest
+FROM pinidh/baseimage-debian-bookworm-slim:latest
 
 # Use baseimage-docker's init system.
 CMD ["/sbin/my_init"]
